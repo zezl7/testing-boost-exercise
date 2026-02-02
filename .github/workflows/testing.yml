@@ -33,7 +33,8 @@ jobs:
       with:
         name: cmake-build-dir
         path: build
-    - name: Run tests
+    - name: Run Tests
       working-directory: build
-      run: chmod +x testsidemade && \ 
+      run: |
+        chmod +x testsidemade
         ctest --output-on-failure
