@@ -1,3 +1,5 @@
+![Boost CI/CD](https://github.com/zezl7/testing-boost-exercise/actions/workflows/testing.yml/badge.svg)
+
 # SIDEMADE - Simple Dense Matrix Decomposition
 
 A simple demo code to read dense matrices from files and solve linear systems with them.
