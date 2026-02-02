@@ -35,4 +35,5 @@ jobs:
         path: build
     - name: Run tests
       working-directory: build
-      run: ctest --output-on-failure
+      run: chmod +x testsidemade && \ 
+        ctest --output-on-failure
