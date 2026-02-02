@@ -1,0 +1,40 @@
+name: Boost CI/CD
+
+on: [push, pull_request]
+
+jobs:
+  style:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - run: sudo apt-get update && sudo apt-get install -y clang-format
+    - run: clang-format --dry-run --Werror tests/*.cpp src/*.cpp src/*.hpp
+
+  build:
+    needs: style
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - run: sudo apt-get update && sudo apt-get install -y libeigen3-dev libboost-test-dev libyaml-cpp-dev
+    - run: cmake -S . -B build
+    - run: cmake --build build
+    - uses: actions/upload-artifact@v4
+      with:
+        name: cmake-build-dir
+        path: build
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - run: sudo apt-get update && sudo apt-get install -y libeigen3-dev libboost-test-dev libyaml-cpp-dev
+    - uses: actions/download-artifact@v4
+      with:
+        name: cmake-build-dir
+        path: build
+    - name: Run Tests
+      working-directory: build
+      run: |
+        chmod +x testsidemade
+        ctest --output-on-failure
